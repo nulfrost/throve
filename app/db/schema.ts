@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import {
   integer,
   pgTable,
@@ -26,6 +27,7 @@ export const feeds = pgTable("feeds", {
   description: varchar({ length: 255 }),
   created_at: timestamp("created_at").notNull().defaultNow(),
   updated_at: timestamp("updated_at").notNull().defaultNow(),
+  user_id: text("user_id"),
 });
 
 export const links = pgTable("links", {
@@ -37,6 +39,7 @@ export const links = pgTable("links", {
   position: integer(),
   created_at: timestamp("created_at").notNull().defaultNow(),
   updated_at: timestamp("updated_at").notNull().defaultNow(),
+  feed_id: text("feed_id"),
 });
 
 export const status = pgTable("status", {
@@ -56,3 +59,22 @@ export const states = pgTable("states", {
   key: varchar({ length: 255 }).primaryKey().unique(),
   state: varchar({ length: 255 }).notNull(),
 });
+
+export const usersRelations = relations(users, ({ many }) => ({
+  feeds: many(feeds),
+}));
+
+export const feedsRelations = relations(feeds, ({ one, many }) => ({
+  user: one(users, {
+    fields: [feeds.user_id],
+    references: [users.id],
+  }),
+  links: many(links),
+}));
+
+export const linksRelations = relations(links, ({ one }) => ({
+  feed: one(feeds, {
+    fields: [links.feed_id],
+    references: [feeds.id],
+  }),
+}));
