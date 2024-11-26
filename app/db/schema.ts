@@ -23,10 +23,12 @@ export const feeds = pgTable("feeds", {
     .notNull()
     .primaryKey()
     .$defaultFn(() => nanoid()),
+  uri: varchar({ length: 255 }).notNull(),
   name: varchar({ length: 255 }).notNull(),
   description: varchar({ length: 255 }),
   created_at: timestamp("created_at").notNull().defaultNow(),
   updated_at: timestamp("updated_at").notNull().defaultNow(),
+  indexed_at: timestamp("updated_at").notNull().defaultNow(),
   user_id: text("user_id"),
 });
 
@@ -35,19 +37,13 @@ export const links = pgTable("links", {
     .notNull()
     .primaryKey()
     .$defaultFn(() => nanoid()),
-  url: text("url").notNull(),
+  uri: varchar({ length: 255 }).notNull(),
+  location: text("url").notNull(),
   position: integer(),
   created_at: timestamp("created_at").notNull().defaultNow(),
   updated_at: timestamp("updated_at").notNull().defaultNow(),
+  indexed_at: timestamp("updated_at").notNull().defaultNow(),
   feed_id: text("feed_id"),
-});
-
-export const status = pgTable("status", {
-  uri: varchar({ length: 255 }).primaryKey().unique(),
-  author_did: varchar({ length: 255 }).notNull(),
-  status: varchar({ length: 255 }).notNull(),
-  created_at: varchar({ length: 255 }).notNull(),
-  indexed_at: varchar({ length: 255 }).notNull(),
 });
 
 export const sessions = pgTable("sessions", {
