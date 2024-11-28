@@ -1,0 +1,39 @@
+{
+  "lexicon": 1,
+  "id": "site.throve.feed",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "Record containing a throve feed",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["url", "name", "description", "createdAt"],
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "The URL for the feed"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 100,
+            "maxGraphemes": 10,
+            "description": "The name for the feed"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 1000,
+            "maxGraphemes": 100,
+            "description": "The description for the feed"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Client-declared timestamp when this feed was originally created."
+          }
+        }
+      }
+    }
+  }
+}

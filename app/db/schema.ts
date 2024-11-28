@@ -23,7 +23,7 @@ export const feeds = pgTable("feeds", {
     .notNull()
     .primaryKey()
     .$defaultFn(() => nanoid()),
-  uri: varchar({ length: 255 }).notNull(),
+  url: varchar({ length: 255 }).notNull(),
   name: varchar({ length: 255 }).notNull(),
   description: varchar({ length: 255 }),
   created_at: timestamp("created_at").notNull().defaultNow(),
@@ -37,8 +37,7 @@ export const links = pgTable("links", {
     .notNull()
     .primaryKey()
     .$defaultFn(() => nanoid()),
-  uri: varchar({ length: 255 }).notNull(),
-  location: text("url").notNull(),
+  url: varchar({ length: 255 }).notNull(),
   position: integer(),
   created_at: timestamp("created_at").notNull().defaultNow(),
   updated_at: timestamp("updated_at").notNull().defaultNow(),
