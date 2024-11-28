@@ -1,0 +1,33 @@
+{
+  "lexicon": 1,
+  "id": "site.throve.link",
+  "defs": {
+    "main": {
+      "type": "record",
+      "description": "Record containing a throve link",
+      "key": "tid",
+      "record": {
+        "type": "object",
+        "required": ["url", "position", "createdAt"],
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "The URL for the feed"
+          },
+          "position": {
+            "type": "integer",
+            "description": "The name for the feed"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime",
+            "description": "Client-declared timestamp when this link was originally created."
+          },
+          "parent": { "type": "ref", "ref": "com.atproto.repo.strongRef" },
+          "feed": { "type": "ref", "ref": "com.atproto.repo.strongRef" }
+        }
+      }
+    }
+  }
+}

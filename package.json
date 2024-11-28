@@ -6,10 +6,12 @@
     "build": "react-router build",
     "dev": "react-router dev",
     "start": "react-router-serve ./build/server/index.js",
+    "lexgen": "pnpm exec lex gen-api ./app/src ./lexicons/**/*.json",
     "typecheck": "react-router typegen && tsc --build --noEmit"
   },
   "dependencies": {
     "@atproto/api": "^0.13.18",
+    "@atproto/lexicon": "^0.4.3",
     "@atproto/oauth-client-node": "^0.2.1",
     "@react-router/node": "^7.0.1",
     "@react-router/serve": "^7.0.1",
@@ -25,6 +27,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@atproto/lex-cli": "^0.5.2",
     "@react-router/dev": "^7.0.1",
     "@types/node": "^20",
     "@types/pg": "^8.11.10",
