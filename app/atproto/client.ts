@@ -7,9 +7,9 @@ const PUBLIC_URL = "https://throve.site";
 const LOCAL_URL = "http://[::1]:5173";
 const URL = IS_DEV ? LOCAL_URL : PUBLIC_URL;
 
-export const at_client = new NodeOAuthClient({
+export const client = new NodeOAuthClient({
   clientMetadata: {
-    client_name: "Throve - Fee",
+    client_name: "Throve - curation for the web",
     client_id: !IS_DEV
       ? `${PUBLIC_URL}/client-metadata.json`
       : `http://localhost?redirect_uri=${encodeURIComponent(
