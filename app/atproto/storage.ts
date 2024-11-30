@@ -4,7 +4,7 @@ import type {
   NodeSavedState,
   NodeSavedStateStore,
 } from "@atproto/oauth-client-node";
-import { authStateTable, authSessionTable } from "@/db/schema";
+import { states, sessions } from "@/db/schema";
 import { type Database } from "@/db";
 import { eq } from "drizzle-orm";
 
@@ -13,20 +13,20 @@ export class StateStore implements NodeSavedStateStore {
   async get(key: string): Promise<NodeSavedState | undefined> {
     const result = await this.db
       .select()
-      .from(authStateTable)
-      .where(eq(authStateTable.key, key));
+      .from(states)
+      .where(eq(states.key, key));
     if (!result.length) return;
     return JSON.parse(result[0].state) as NodeSavedState;
   }
   async set(key: string, value: NodeSavedState) {
     const state = JSON.stringify(value);
     await this.db
-      .insert(authStateTable)
+      .insert(states)
       .values({ key, state })
-      .onConflictDoUpdate({ target: authStateTable.key, set: { state } });
+      .onConflictDoUpdate({ target: states.key, set: { state } });
   }
   async del(key: string) {
-    await this.db.delete(authStateTable).where(eq(authStateTable.key, key));
+    await this.db.delete(states).where(eq(states.key, key));
   }
 }
 
@@ -35,22 +35,19 @@ export class SessionStore implements NodeSavedSessionStore {
   async get(key: string): Promise<NodeSavedSession | undefined> {
     const result = await this.db
       .select()
-      .from(authSessionTable)
-      .where(eq(authSessionTable.key, key));
+      .from(sessions)
+      .where(eq(sessions.key, key));
     if (!result.length) return;
     return JSON.parse(result[0].session) as NodeSavedSession;
   }
   async set(key: string, value: NodeSavedSession) {
     const session = JSON.stringify(value);
-    await this.db
-      .insert(authSessionTable)
-      .values({ key, session })
-      .onConflictDoUpdate({
-        target: authSessionTable.key,
-        set: { session },
-      });
+    await this.db.insert(sessions).values({ key, session }).onConflictDoUpdate({
+      target: sessions.key,
+      set: { session },
+    });
   }
   async del(key: string) {
-    await this.db.delete(authSessionTable).where(eq(authSessionTable.key, key));
+    await this.db.delete(sessions).where(eq(sessions.key, key));
   }
 }

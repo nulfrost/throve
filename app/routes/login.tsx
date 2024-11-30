@@ -1,14 +1,36 @@
 import { Input } from "@/components/ui/input";
-import { Route } from "./+types/login";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { Route } from "./+types/login";
+import { client } from "@/atproto/client";
+import { redirect } from "react-router";
 
-export function meta({}: Route.MetaArgs) {
+export function meta() {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "Throve - Login" },
+    { name: "description", content: "Log in to continue to Throve." },
   ];
+}
+
+// do proper validations here for handles
+
+export async function action({ request }: Route.ActionArgs) {
+  const formData = await request.formData();
+  const handle = formData.get("handle") as string;
+
+  if (typeof handle !== "string") {
+    throw new Error("Invalid handle");
+  }
+
+  const ac = new AbortController();
+
+  const url = await client.authorize(handle, {
+    signal: ac.signal,
+    ui_locales: "en-CA",
+  });
+
+  throw redirect(url.toString());
 }
 
 export default function Login() {
@@ -17,34 +39,11 @@ export default function Login() {
       <Card className="max-w-xl flex-1">
         <CardContent className="pt-6">
           <h1 className="mb-4 font-bold text-xl text-center">Throve</h1>
-          <form>
+          <form method="POST">
             <Label htmlFor="handle" className="block mb-2">
               Bluesky Handle
             </Label>
-            <Input
-              type="text"
-              className="mb-4"
-              name="handle"
-              id="handle"
-              placeholder="user@domain.com"
-            />
-            <Label htmlFor="password" className="block mb-2">
-              Bluesky Password
-            </Label>
-            <Input
-              type="password"
-              className="mb-4"
-              name="password"
-              id="password"
-            />
-            <a
-              href="https://bsky.app/settings/app-passwords"
-              target="_blank"
-              rel="noreferrer noopener"
-              className="block text-blue-600 text-sm mb-4 hover:text-blue-700 duration-150"
-            >
-              Remember to generate an App Password &rarr;
-            </a>
+            <Input type="text" className="mb-4" name="handle" id="handle" />
             <Button type="submit" className="w-full font-bold">
               Log in
             </Button>
