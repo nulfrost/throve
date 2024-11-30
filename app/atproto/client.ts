@@ -9,7 +9,7 @@ const URL = IS_DEV ? LOCAL_URL : PUBLIC_URL;
 
 export const client = new NodeOAuthClient({
   clientMetadata: {
-    client_name: "Throve - Feeds for the web",
+    client_name: "Throve - curation for the web",
     client_id: !IS_DEV
       ? `${PUBLIC_URL}/client-metadata.json`
       : `http://localhost?redirect_uri=${encodeURIComponent(
